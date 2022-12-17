@@ -1,0 +1,92 @@
+#include <stdio.h>
+#include <stdlib.h>
+ 
+int main (void){
+
+    int accNo, nic, accBal, searchAcc;
+    int tType, tAmount, newBal;
+    char name;
+    int i = 0;
+
+    FILE *fp;
+    fp = fopen("account.txt", "w");
+
+    if(fp == NULL)
+   {
+      printf("Error!");   
+      exit(1);             
+   }
+
+    // part II
+    for (i == 0; i < 4; i++)
+    {
+        printf("Account No : ");
+        scanf("%d", &accNo);
+        printf("NIC No : ");
+        scanf("%d", &nic);
+        printf("Customer Name : ");
+        scanf(" %c", &name);
+        printf("Account Balance : ");
+        scanf("%d", &accBal);
+
+        fprintf(fp, "%d %d %c %d\n", accNo, nic, name, accBal);
+
+    }
+
+    fclose(fp);
+
+    //part III
+    printf("\n");
+    printf("Enter Account no for search : ");
+    scanf("%d", &searchAcc);
+
+    fp = fopen("account.txt", "r");
+
+    if(fp == NULL)
+       {
+        printf("Error!");   
+          exit(1);             
+       } 
+
+       while(!feof(fp))
+    {
+        fscanf(fp, "%d %d %c %d\n", &accNo, &nic, &name, &accBal);
+
+           if(searchAcc == accNo)
+           {
+               newBal = accBal;
+                   //part IV
+            fp = fopen("transaction.txt", "r");
+
+            if(fp == NULL)
+               {
+                printf("Error!");   
+                  exit(1);             
+               } 
+
+            while(!feof(fp))
+            {
+                fscanf(fp, "%c %d\n", &tType, &tAmount);
+
+                   if(tType == 'D')
+                   {
+                       newBal = newBal + tAmount;
+            }
+                else if(tType == 'W')
+                {
+                    newBal = newBal - tAmount;
+                }
+                else
+                {
+                    printf("Invalid");
+                }
+            }
+        }
+    }
+    fclose(fp);
+ 
+    
+    printf ("Account No : %d\n", searchAcc);
+    printf ("Balance : %d\n", newBal);    
+    return 0;
+}

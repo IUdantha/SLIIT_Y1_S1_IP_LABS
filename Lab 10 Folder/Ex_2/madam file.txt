@@ -1,0 +1,46 @@
+//Ex2
+#include <stdio.h> 
+int main(void) 
+{  
+    char itemID[5];
+    char name[5];
+    int i, qty, unitPrice, total, totalPrice=0;
+
+    FILE *cfPtr;
+    cfPtr = fopen("purchase.txt", "w");
+    if (cfPtr == NULL)
+    {
+        printf("File cannot be open");
+        return -1;
+    }
+    for(i = 1; i <= 4; ++i)
+    {
+        printf("Input the item ID: ");
+        scanf("%s", &itemID);
+        printf("Input the item name: ");
+        scanf("%s", &name);
+        printf("Input the quantity: ");
+        scanf("%d",&qty);
+        printf("Input the unit price: ");
+        scanf("%d",&unitPrice);
+        fprintf(cfPtr, "%s %s %d %d\n", itemID, name, qty, unitPrice);
+        printf("\n");
+    } 
+    fclose(cfPtr);
+    cfPtr = fopen("purchase.txt", "r");
+
+    fscanf(cfPtr, "%s %s %d %d", &itemID, &name, &qty, &unitPrice);
+    while (!feof(cfPtr))
+    {
+        total = qty*unitPrice;
+
+        printf ("%s\t %s\t %d\t %d\t %d\n", itemID, name, qty, unitPrice, total);
+        fscanf(cfPtr, "%s %s %d %d", &itemID, &name, &qty, &unitPrice); 
+        totalPrice += total;
+    } 
+
+    printf("Total is %d\n",totalPrice);
+    fclose(cfPtr);
+ 
+return 0;
+} 
